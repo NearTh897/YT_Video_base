@@ -1,0 +1,236 @@
+// ============================================
+// 1. CONCEITO DE "ESTADO" DA APLICAÇÃO
+// Analogia: É como um "caderno de anotações" que guarda likes, vídeo atual etc.
+// ============================================
+let state = {
+    currentVideoId: 'dQw4w9WgXcQ',     // ID do vídeo atual
+    videoTitle: 'Galo de Tênis - Vídeo Incrível',
+    likes: 0,
+    dislikes: 0,
+    comments: [
+        { user: 'DemiurgoDaSilvazeto', text: 'Que Deus te ensaboe!', date: '2025-01-15' },
+        { user: 'furadeira123', text: 'Mt bom', date: '2025-01-16' },
+        { user: 'ku765432', text: 'dedique muito e passará a ser ruim!', date: '2025-01-17' }
+    ]
+};
+
+// ============================================
+// 2. VÍDEOS RELACIONADOS (dados simulados)
+// Analogia: Uma "prateleira de produtos" que podemos recomendar
+// ============================================
+const relatedVideos = [
+    { id: '9bZkp7q19f0', title: 'PSY - GANGNAM STYLE', views: '4.2B', thumbnail: 'https://img.youtube.com/vi/9bZkp7q19f0/hqdefault.jpg' },
+    { id: 'kJQP7kiw5Fk', title: 'Luis Fonsi - Despacito', views: '7.8B', thumbnail: 'https://img.youtube.com/vi/kJQP7kiw5Fk/hqdefault.jpg' },
+    { id: 'dQw4w9WgXcQ', title: 'Rick Astley - Never Gonna Give You Up', views: '1.2B', thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg' }
+];
+
+// ============================================
+// 3. FUNÇÕES DE MANIPULAÇÃO DO DOM (tela)
+// Analogia: "Pintor" que desenha os elementos na página
+// ============================================
+
+// Função para carregar um vídeo no player
+function loadVideo(videoId, title) {
+    const player = document.getElementById('youtubePlayer');
+    // Muda o src do iframe - isso recarrega o player com novo vídeo
+    player.src = `https://www.youtube.com/embed/${videoId}`;
+    
+    // Atualiza o título na página
+    document.getElementById('videoTitle').textContent = title;
+    
+    // Atualiza o estado
+    state.currentVideoId = videoId;
+    state.videoTitle = title;
+    
+    // Opcional: Resetar likes ao mudar de vídeo (ou manter, você decide)
+    // state.likes = 0;
+    // state.dislikes = 0;
+    updateLikeDislikeUI();
+}
+
+// Função para renderizar a lista de vídeos relacionados
+function renderRelatedVideos() {
+    const container = document.getElementById('relatedVideosList');
+    if (!container) return;
+    
+    // Limpa o container
+    container.innerHTML = '';
+    
+    // Para cada vídeo, cria um elemento HTML
+    relatedVideos.forEach(video => {
+        const videoElement = document.createElement('div');
+        videoElement.className = 'related-video-item';
+        videoElement.innerHTML = `
+            <img src="${video.thumbnail}" alt="${video.title}" class="related-thumb">
+            <div class="related-info">
+                <p><strong>${video.title}</strong></p>
+                <small>${video.views} visualizações</small>
+            </div>
+        `;
+        
+        // Adiciona evento de clique para carregar este vídeo
+        videoElement.addEventListener('click', () => {
+            loadVideo(video.id, video.title);
+        });
+        
+        container.appendChild(videoElement);
+    });
+}
+
+// Atualiza os contadores de like/dislike na tela
+function updateLikeDislikeUI() {
+    document.getElementById('likeCount').textContent = state.likes;
+    document.getElementById('dislikeCount').textContent = state.dislikes;
+}
+
+// Função para renderizar todos os comentários
+function renderComments() {
+    const commentsContainer = document.getElementById('commentsList');
+    const commentCountSpan = document.getElementById('commentCount');
+    
+    if (!commentsContainer) return;
+    
+    // Atualiza contador
+    commentCountSpan.textContent = state.comments.length;
+    
+    // Limpa e recria a lista (versão didática, poderia ser mais eficiente)
+    commentsContainer.innerHTML = '';
+    
+    state.comments.forEach(comment => {
+        const commentDiv = document.createElement('div');
+        commentDiv.className = 'comment-item';
+        commentDiv.innerHTML = `
+            <strong>${escapeHtml(comment.user)}</strong>
+            <small>${comment.date}</small>
+            <p>${escapeHtml(comment.text)}</p>
+            <button class="reply-btn" data-user="${comment.user}">Responder</button>
+        `;
+        commentsContainer.appendChild(commentDiv);
+    });
+    
+    // Adiciona eventos para botões "Responder" (opcional)
+    document.querySelectorAll('.reply-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const user = e.target.getAttribute('data-user');
+            const commentInput = document.getElementById('commentInput');
+            commentInput.value = `@${user} `;
+            commentInput.focus();
+        });
+    });
+}
+
+// Função para adicionar novo comentário
+function addComment(user, text) {
+    if (!text.trim()) return false;
+    
+    const newComment = {
+        user: user || 'Você',
+        text: text.trim(),
+        date: new Date().toLocaleDateString('pt-BR')
+    };
+    
+    state.comments.push(newComment);
+    renderComments(); // Recarrega a lista
+    return true;
+}
+
+// Função utilitária para escapar HTML (evitar XSS)
+function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+    });
+}
+
+// ============================================
+// 4. CONFIGURAÇÃO DE EVENTOS (os "garçons" da aplicação)
+// ============================================
+function setupEventListeners() {
+    // Botão Like
+    const likeBtn = document.getElementById('likeBtn');
+    if (likeBtn) {
+        likeBtn.addEventListener('click', () => {
+            state.likes++;
+            updateLikeDislikeUI();
+            // Pequeno feedback visual (opcional)
+            likeBtn.style.transform = 'scale(1.1)';
+            setTimeout(() => { likeBtn.style.transform = ''; }, 200);
+        });
+    }
+    
+    // Botão Dislike
+    const dislikeBtn = document.getElementById('dislikeBtn');
+    if (dislikeBtn) {
+        dislikeBtn.addEventListener('click', () => {
+            state.dislikes++;
+            updateLikeDislikeUI();
+        });
+    }
+    
+    // Botão Compartilhar
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link copiado para área de transferência!');
+            });
+        });
+    }
+    
+    // Botão de enviar comentário
+    const submitBtn = document.getElementById('submitCommentBtn');
+    const commentInput = document.getElementById('commentInput');
+    
+    if (submitBtn && commentInput) {
+        submitBtn.addEventListener('click', () => {
+            if (addComment('Visitante', commentInput.value)) {
+                commentInput.value = ''; // Limpa o campo
+            } else {
+                alert('Digite um comentário válido');
+            }
+        });
+        
+        // Permite enviar com Enter
+        commentInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitBtn.click();
+            }
+        });
+    }
+    
+    // Barra de busca (simples)
+    const searchBtn = document.getElementById('searchBtn');
+    const searchInput = document.getElementById('searchInput');
+    
+    if (searchBtn && searchInput) {
+        searchBtn.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                alert(`Busca por: "${query}" - Funcionalidade extra que você pode implementar!`);
+                // Aqui você poderia filtrar vídeos relacionados, etc.
+            }
+        });
+    }
+}
+
+// ============================================
+// 5. INICIALIZAÇÃO (quando a página carrega)
+// ============================================
+function init() {
+    renderRelatedVideos();
+    renderComments();
+    updateLikeDislikeUI();
+    setupEventListeners();
+    
+    console.log('YouTubeFake inicializado! Estado atual:', state);
+}
+
+// Aguarda o DOM estar pronto antes de executar
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init(); // DOM já está pronto
+}

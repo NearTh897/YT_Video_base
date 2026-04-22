@@ -3,125 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YoutubeFake</title>
+    <title>YouTubeFake - Player de Vídeo</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="side-bar">
-                           <div class="sidebar-item">
-        <img src="/yt/images/TelaPreta.jpg" alt="user">
-        <h1>Meu Canal</h1>
-                           </div>
-            <div class="sidebar-item">
-                <span>Início</span>
-            </div>
-            <div class="sidebar-item">
-                <span>Explorar</span>
-            </div>
-            <div class="sidebar-item">
-                <span>Inscrições</span>
-            </div>
-            <hr>
-            <div class="sidebar-item">
-                <span>Biblioteca</span>
-            </div>
-            <div class="sidebar-item">
-                <span>Histórico</span>
-            </div>
-            <div>
-                <header class="top-bar">
-                    <input type="text" placeholder="Pesquisar..." class="search-bar">
-                </header>
-        
-        </section>
-    </header>
-    <section class="video-info">
-        <h1 class="video-title">Galo de tenis</h1>
-    </section>
-
-    <div class="container">
-        <!-- Player de Vídeo -->
-        <div class="video-container">
-            <iframe 
-                width="560" 
-                height="315" 
-                src="https://www.youtube.com/embed/VIDEO_ID" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-                
-            </iframe>        
-                <!-- Status do Vídeo -->
-                        <div class="video-stats">
-                <span>100.000 visualizações</span>
-                <button class="like-btn"> Like</button>
-                <button class="like-btn"> Dislike</button>
-                <button> Compartilhar</button>
-            </div>
-        </div>
-
-
-        <!-- Descrição -->
-        <section class="description">
-            <p>Meu Canal</p>
-            <p>Publicado em 01/01/2025</p>
-            <p>123</p>
-        </section>
-
-        <section class="related-videos">
-            <h2>Vídeos Relacionados</h2>
-            <div class="related-video">
-          <img src="/yt/images/TelaPreta.jpg" alt="Thumbnail" class="thumbnail">
-                <div class="video-details">
-                                   <p class="video-title">Título do Vídeo Relacionado</p>
-                    <p class="video-info">100 mil visualizações • 2 semanas atrás</p>
-       </div>
-            </div>
-            <div class="related-video">
-                                 <p class="video-title">Outro Vídeo Relacionado</p>
-                    <p class="video-info">50 mil visualizações • 1 semana atrás</p>
-   <img src="/yt/images/TelaPreta.jpg" alt="Thumbnail" class="thumbnail">
-                <div class="video-details">
-                </div>
-            </div>
-        </section>
-        <!-- Comentários (Placeholder) -->
-        <section class="comments-section">
-            <h2>Comentários</h2>
-            <div class="new-comment">
-                <input type="text" placeholder="Adicionar um comentário...">
-                <button type="submit"><strong>Enviar</strong></button>
-            </div>
-                    <div class="comment-user">
-                <img src="/yt/images/user.jpeg" alt="user">
-                <h3><strong>DemiurgoDaSilvazeto</strong></h3>
-                <p> Que Deus te ensaboe!</p>
-                <h4><strong>Responder</strong></h4>
-
-                </div>
-                <div class="comment-user">
-                <img src="/yt/images/user.jpeg" alt="user">
-                <h3><strong>furadeira123</strong></h3>
-                <p> Mt bom</p>
-                <h4><strong>Responder</strong></h4>
-                </div>
-                <div class="comment-user">
-                    <img src="/yt/images/user.jpeg" alt="user">
-                    <h3><strong> ku765432</strong></h3>
-                    <p> dedique muito e passará a ser ruim!</p>
-                    <h4><strong>Responder</strong></h4>
-                </div>
-                    <div class="comment-user">
-                    <img src="/yt/images/user.jpeg" alt="user">
-                    <h3><strong>A Lenda</strong> </h3>
-                    <p>N gostei</p>
-                    <h4><strong>Responder</strong></h4>
-                </div>
-
+    <!-- 
+        ESTRUTURA PRINCIPAL:
+        - header (topo com logo e busca)
+        - .layout (sidebar + conteúdo principal)
+        - .main-content (player + comentários)
+        - .sidebar (menu lateral)
+    -->
     
+    <header class="top-header">
+        <div class="logo">
+            <!-- Placeholder para logo - depois pode trocar por imagem -->
+            <span class="logo-icon">▶</span>
+            <span class="logo-text">YouTubeFake</span>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Pesquisar..." class="search-input">
+            <button id="searchBtn" class="search-btn">🔍</button>
+        </div>
+        
+        <div class="user-menu">
+            <span>👤</span>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- SIDEBAR - Menu lateral -->
+        <aside class="sidebar">
+            <nav>
+                <div class="sidebar-item active" data-page="home">
+                    <span class="icon">🏠</span> Início
+                </div>
+                <div class="sidebar-item" data-page="explore">
+                    <span class="icon">✨</span> Explorar
+                </div>
+                <div class="sidebar-item" data-page="subscriptions">
+                    <span class="icon">📺</span> Inscrições
+                </div>
+                <hr>
+                <div class="sidebar-item" data-page="library">
+                    <span class="icon">📚</span> Biblioteca
+                </div>
+                <div class="sidebar-item" data-page="history">
+                    <span class="icon">⏱️</span> Histórico
+                </div>
+            </nav>
+        </aside>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="main-content">
+            <!-- Player + Informações -->
+            <div class="video-section">
+                <div class="video-container">
+                    <!-- 
+                        NOTE: VIDEO_ID será dinâmico!
+                        Vamos controlar via JavaScript para mudar vídeos relacionados
+                    -->
+                    <iframe 
+                        id="youtubePlayer"
+                        width="100%" 
+                        height="400" 
+                        src="https://youtu.be/XBuj2OJXtlU?si=l4hjv55Io17SDzOR" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+                <div class="video-info">
+                    <h1 id="videoTitle">Galo de Tênis - Vídeo Incrível</h1>
+                    <div class="channel-stats">
+                        <div class="channel">
+                            <span class="avatar">🎥</span>
+                            <span class="channel-name">Meu Canal</span>
+                        </div>
+                        <div class="stats">
+                            <span id="viewCount">100.000</span> visualizações
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AÇÕES: Like, Dislike, Compartilhar -->
+                <div class="video-actions">
+                    <button id="likeBtn" class="action-btn">
+                        👍 <span id="likeCount">0</span>
+                    </button>
+                    <button id="dislikeBtn" class="action-btn">
+                        👎 <span id="dislikeCount">0</span>
+                    </button>
+                    <button id="shareBtn" class="action-btn">
+                        🔗 Compartilhar
+                    </button>
+                </div>
+
+                <!-- DESCRIÇÃO -->
+                <div class="description">
+                    <p><strong>Publicado em 01/01/2025</strong></p>
+                    <p>Este é um vídeo demonstrativo do projeto YouTubeFake. Clique nos vídeos relacionados para trocar o player!</p>
+                </div>
+
+                <!-- SEÇÃO DE COMENTÁRIOS DINÂMICA -->
+                <div class="comments-section">
+                    <h2>Comentários (<span id="commentCount">3</span>)</h2>
+                    
+                    <div class="new-comment">
+                        <input type="text" id="commentInput" placeholder="Adicione um comentário...">
+                        <button id="submitCommentBtn">Enviar</button>
+                    </div>
+
+                    <div id="commentsList" class="comments-list">
+                        <!-- Comentários serão inseridos dinamicamente aqui via JS -->
+                    </div>
+                </div>
             </div>
-        </section>
+
+            <!-- VÍDEOS RELACIONADOS (Sidebar direita) -->
+            <aside class="related-sidebar">
+                <h3>Vídeos Relacionados</h3>
+                <div id="relatedVideosList" class="related-videos-list">
+                    <!-- Lista populada via JavaScript -->
+                </div>
+            </aside>
+        </main>
     </div>
 
     <script src="script.js"></script>
