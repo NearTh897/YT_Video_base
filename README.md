@@ -12,7 +12,7 @@ Clique no botão acima ou em: [https://nearth897.github.io/YT_Video_base/](https
 
 ##  Funcionalidades
 - Player de vídeo integrado com YouTube
-- Sistema de likes/dislikes
+- Interface de likes/dislikes
 - Comentários dinâmicos
 - Vídeos relacionados interativos
 
